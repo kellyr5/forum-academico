@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fórum Acadêmico - UNIFEI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        header h1 {
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .tab-button {
+            padding: 15px 30px;
+            background: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            color: #667eea;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+
+        .tab-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 20px rgba(0,0,0,0.2);
+        }
+
+        .tab-button.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .result.success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            display: block;
+        }
+
+        .result.error {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            display: block;
+        }
+
+        .list-item {
+            background: #f8f9fa;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .list-item h3 {
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        .list-item p {
+            color: #666;
+            margin: 3px 0;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #667eea;
+        }
+
+        .info-box {
+            background: #e7f3ff;
+            border-left: 4px solid #2196F3;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+
+        .info-box h3 {
+            color: #2196F3;
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎓 Fórum Acadêmico</h1>
+            <p>Sistema de Gerenciamento - UNIFEI</p>
+            <p style="font-size: 0.9em; color: #999; margin-top: 5px;">Release 0 - MVP</p>
+        </header>
+
+        <div class="tabs">
+            <button class="tab-button active" onclick="openTab('usuarios')">👤 Usuários</button>
+            <button class="tab-button" onclick="openTab('disciplinas')">📚 Disciplinas</button>
+            <button class="tab-button" onclick="openTab('sobre')">ℹ️ Sobre</button>
+        </div>
+
+        <!-- TAB: USUÁRIOS -->
+        <div id="usuarios" class="tab-content active">
+            <h2 style="color: #667eea; margin-bottom: 20px;">Gerenciar Usuários</h2>
+            
+            <div class="grid">
+                <!-- Cadastrar Usuário -->
+                <div>
+                    <h3 style="margin-bottom: 15px;">➕ Cadastrar Novo Usuário</h3>
+                    <form id="formCadastroUsuario">
+                        <div class="form-group">
+                            <label>Nome Completo:</label>
+                            <input type="text" id="nome_completo" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Email Institucional:</label>
+                            <input type="email" id="email" placeholder="nome@unifei.edu.br" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Senha (mínimo 8 caracteres):</label>
+                            <input type="password" id="senha" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Universidade:</label>
+                            <select id="universidade_id" required>
+                                <option value="">Selecione...</option>
+                                <option value="1">UNIFEI</option>
+                                <option value="2">USP</option>
+                                <option value="3">UNICAMP</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Curso:</label>
+                            <select id="curso_id" required>
+                                <option value="">Selecione...</option>
+                                <option value="1">Engenharia de Computação</option>
+                                <option value="2">Sistemas de Informação</option>
+                                <option value="3">Ciência da Computação</option>
+                                <option value="4">Engenharia de Software</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Período:</label>
+                            <select id="periodo" required>
+                                <option value="">Selecione...</option>
+                                <option value="1">1º Período</option>
+                                <option value="2">2º Período</option>
+                                <option value="3">3º Período</option>
+                                <option value="4">4º Período</option>
+                                <option value="5">5º Período</option>
+                                <option value="6">6º Período</option>
+                                <option value="7">7º Período</option>
+                                <option value="8">8º Período</option>
+                                <option value="9">9º Período</option>
+                                <option value="10">10º Período</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Tipo de Usuário:</label>
+                            <select id="tipo_usuario" required>
+                                <option value="">Selecione...</option>
+                                <option value="Aluno">Aluno</option>
+                                <option value="Professor">Professor</option>
+                                <option value="Monitor">Monitor</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn">Cadastrar Usuário</button>
+                    </form>
+                    <div id="resultUsuario" class="result"></div>
+                </div>
+
+                <!-- Listar Usuários -->
+                <div>
+                    <h3 style="margin-bottom: 15px;">📋 Lista de Usuários</h3>
+                    <button class="btn btn-secondary" onclick="listarUsuarios()">🔄 Atualizar Lista</button>
+                    <div id="listaUsuarios" style="margin-top: 20px;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB: DISCIPLINAS -->
+        <div id="disciplinas" class="tab-content">
+            <h2 style="color: #667eea; margin-bottom: 20px;">Gerenciar Disciplinas</h2>
+            
+            <div class="grid">
+                <!-- Cadastrar Disciplina -->
+                <div>
+                    <h3 style="margin-bottom: 15px;">➕ Cadastrar Nova Disciplina</h3>
+                    <form id="formCadastroDisciplina">
+                        <div class="form-group">
+                            <label>Nome da Disciplina:</label>
+                            <input type="text" id="disc_nome" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Código:</label>
+                            <input type="text" id="disc_codigo" placeholder="Ex: COM201" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Universidade:</label>
+                            <select id="disc_universidade_id" required>
+                                <option value="">Selecione...</option>
+                                <option value="1">UNIFEI</option>
+                                <option value="2">USP</option>
+                                <option value="3">UNICAMP</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Curso:</label>
+                            <select id="disc_curso_id" required>
+                                <option value="">Selecione...</option>
+                                <option value="1">Engenharia de Computação</option>
+                                <option value="2">Sistemas de Informação</option>
+                                <option value="3">Ciência da Computação</option>
+                                <option value="4">Engenharia de Software</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Professor Responsável (ID):</label>
+                            <input type="number" id="disc_professor_id" placeholder="Ex: 1" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Período Letivo:</label>
+                            <input type="text" id="disc_periodo_letivo" placeholder="Ex: 2025.1" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Descrição:</label>
+                            <textarea id="disc_descricao" rows="3"></textarea>
+                        </div>
+                        <button type="submit" class="btn">Cadastrar Disciplina</button>
+                    </form>
+                    <div id="resultDisciplina" class="result"></div>
+                </div>
+
+                <!-- Listar Disciplinas -->
+                <div>
+                    <h3 style="margin-bottom: 15px;">📋 Lista de Disciplinas</h3>
+                    <button class="btn btn-secondary" onclick="listarDisciplinas()">🔄 Atualizar Lista</button>
+                    <div id="listaDisciplinas" style="margin-top: 20px;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB: SOBRE -->
+        <div id="sobre" class="tab-content">
+            <h2 style="color: #667eea; margin-bottom: 20px;">Sobre o Sistema</h2>
+            
+            <div class="info-box">
+                <h3>📚 Fórum Acadêmico - Release 0 (MVP)</h3>
+                <p><strong>Versão:</strong> 1.0.0</p>
+                <p><strong>Instituição:</strong> UNIFEI</p>
+                <p><strong>Disciplina:</strong> Gerência de Projetos</p>
+            </div>
+
+            <div class="info-box">
+                <h3>✨ Funcionalidades Implementadas</h3>
+                <ul style="margin-left: 20px; margin-top: 10px;">
+                    <li>✅ CRUD completo de Usuários</li>
+                    <li>✅ CRUD completo de Disciplinas</li>
+                    <li>✅ Validações de segurança</li>
+                    <li>✅ Criptografia de senhas</li>
+                    <li>✅ Banco de dados PostgreSQL</li>
+                </ul>
+            </div>
+
+            <div class="info-box">
+                <h3>🔗 Endpoints da API</h3>
+                <p><strong>Usuários:</strong></p>
+                <ul style="margin-left: 20px; margin-top: 5px;">
+                    <li>POST /api/usuarios - Criar usuário</li>
+                    <li>GET /api/usuarios - Listar usuários</li>
+                    <li>GET /api/usuarios/:id - Buscar usuário</li>
+                    <li>PUT /api/usuarios/:id - Editar usuário</li>
+                    <li>DELETE /api/usuarios/:id - Excluir usuário</li>
+                </ul>
+                <p style="margin-top: 15px;"><strong>Disciplinas:</strong></p>
+                <ul style="margin-left: 20px; margin-top: 5px;">
+                    <li>POST /api/disciplinas - Criar disciplina</li>
+                    <li>GET /api/disciplinas - Listar disciplinas</li>
+                    <li>GET /api/disciplinas/:id - Buscar disciplina</li>
+                    <li>PUT /api/disciplinas/:id - Editar disciplina</li>
+                    <li>DELETE /api/disciplinas/:id - Excluir disciplina</li>
+                </ul>
+            </div>
+
+            <div class="info-box">
+                <h3>👥 Equipe de Desenvolvimento</h3>
+                <p>Gustavo Daniel Vitor</p>
+                <p>Kelly Dos Reis Leite</p>
+                <p>Luiz Raul Gomes Oliveira</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:3000/api';
+
+        // Mudar tabs
+        function openTab(tabName) {
+            const tabs = document.querySelectorAll('.tab-content');
+            const buttons = document.querySelectorAll('.tab-button');
+            
+            tabs.forEach(tab => tab.classList.remove('active'));
+            buttons.forEach(btn => btn.classList.remove('active'));
+            
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // Cadastrar Usuário
+        document.getElementById('formCadastroUsuario').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const dados = {
+                nome_completo: document.getElementById('nome_completo').value,
+                email: document.getElementById('email').value,
+                senha: document.getElementById('senha').value,
+                universidade_id: parseInt(document.getElementById('universidade_id').value),
+                curso_id: parseInt(document.getElementById('curso_id').value),
+                periodo: parseInt(document.getElementById('periodo').value),
+                tipo_usuario: document.getElementById('tipo_usuario').value
+            };
+
+            try {
+                const response = await fetch(`${API_URL}/usuarios`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(dados)
+                });
+
+                const result = await response.json();
+                const resultDiv = document.getElementById('resultUsuario');
+
+                if (result.success) {
+                    resultDiv.className = 'result success';
+                    resultDiv.textContent = '✅ ' + result.message;
+                    e.target.reset();
+                    listarUsuarios();
+                } else {
+                    resultDiv.className = 'result error';
+                    resultDiv.textContent = '❌ ' + result.message;
+                }
+            } catch (error) {
+                const resultDiv = document.getElementById('resultUsuario');
+                resultDiv.className = 'result error';
+                resultDiv.textContent = '❌ Erro ao conectar com o servidor';
+            }
+        });
+
+        // Listar Usuários
+        async function listarUsuarios() {
+            const listaDiv = document.getElementById('listaUsuarios');
+            listaDiv.innerHTML = '<div class="loading">🔄 Carregando...</div>';
+
+            try {
+                const response = await fetch(`${API_URL}/usuarios`);
+                const result = await response.json();
+
+                if (result.success && result.data.length > 0) {
+                    listaDiv.innerHTML = '';
+                    result.data.forEach(usuario => {
+                        const item = document.createElement('div');
+                        item.className = 'list-item';
+                        item.innerHTML = `
+                            <h3>${usuario.nome_completo}</h3>
+                            <p><strong>Email:</strong> ${usuario.email}</p>
+                            <p><strong>Tipo:</strong> ${usuario.tipo_usuario}</p>
+                            <p><strong>Universidade:</strong> ${usuario.universidade || 'N/A'}</p>
+                            <p><strong>Curso:</strong> ${usuario.curso || 'N/A'}</p>
+                            <p><strong>Período:</strong> ${usuario.periodo}º</p>
+                            <div class="button-group">
+                                <button class="btn btn-danger" onclick="excluirUsuario(${usuario.id})">🗑️ Excluir</button>
+                            </div>
+                        `;
+                        listaDiv.appendChild(item);
+                    });
+                } else {
+                    listaDiv.innerHTML = '<p style="text-align: center; color: #999;">Nenhum usuário cadastrado</p>';
+                }
+            } catch (error) {
+                listaDiv.innerHTML = '<p style="text-align: center; color: red;">❌ Erro ao carregar usuários</p>';
+            }
+        }
+
+        // Excluir Usuário
+        async function excluirUsuario(id) {
+            if (!confirm('Tem certeza que deseja excluir este usuário?')) return;
+
+            try {
+                const response = await fetch(`${API_URL}/usuarios/${id}`, {
+                    method: 'DELETE'
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    alert('✅ Usuário excluído com sucesso!');
+                    listarUsuarios();
+                } else {
+                    alert('❌ ' + result.message);
+                }
+            } catch (error) {
+                alert('❌ Erro ao excluir usuário');
+            }
+        }
+
+        // Cadastrar Disciplina
+        document.getElementById('formCadastroDisciplina').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const dados = {
+                nome: document.getElementById('disc_nome').value,
+                codigo: document.getElementById('disc_codigo').value,
+                universidade_id: parseInt(document.getElementById('disc_universidade_id').value),
+                curso_id: parseInt(document.getElementById('disc_curso_id').value),
+                professor_id: parseInt(document.getElementById('disc_professor_id').value),
+                periodo_letivo: document.getElementById('disc_periodo_letivo').value,
+                descricao: document.getElementById('disc_descricao').value
+            };
+
+            try {
+                const response = await fetch(`${API_URL}/disciplinas`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(dados)
+                });
+
+                const result = await response.json();
+                const resultDiv = document.getElementById('resultDisciplina');
+
+                if (result.success) {
+                    resultDiv.className = 'result success';
+                    resultDiv.textContent = '✅ ' + result.message;
+                    e.target.reset();
+                    listarDisciplinas();
+                } else {
+                    resultDiv.className = 'result error';
+                    resultDiv.textContent = '❌ ' + result.message;
+                }
+            } catch (error) {
+                const resultDiv = document.getElementById('resultDisciplina');
+                resultDiv.className = 'result error';
+                resultDiv.textContent = '❌ Erro ao conectar com o servidor';
+            }
+        });
+
+        // Listar Disciplinas
+        async function listarDisciplinas() {
+            const listaDiv = document.getElementById('listaDisciplinas');
+            listaDiv.innerHTML = '<div class="loading">🔄 Carregando...</div>';
+
+            try {
+                const response = await fetch(`${API_URL}/disciplinas`);
+                const result = await response.json();
+
+                if (result.success && result.data.length > 0) {
+                    listaDiv.innerHTML = '';
+                    result.data.forEach(disciplina => {
+                        const item = document.createElement('div');
+                        item.className = 'list-item';
+                        item.innerHTML = `
+                            <h3>${disciplina.nome}</h3>
+                            <p><strong>Código:</strong> ${disciplina.codigo}</p>
+                            <p><strong>Professor:</strong> ${disciplina.professor_nome || 'N/A'}</p>
+                            <p><strong>Universidade:</strong> ${disciplina.universidade || 'N/A'}</p>
+                            <p><strong>Curso:</strong> ${disciplina.curso || 'N/A'}</p>
+                            <p><strong>Período:</strong> ${disciplina.periodo_letivo}</p>
+                            <p><strong>Descrição:</strong> ${disciplina.descricao || 'Sem descrição'}</p>
+                            <div class="button-group">
+                                <button class="btn btn-danger" onclick="excluirDisciplina(${disciplina.id})">🗑️ Excluir</button>
+                            </div>
+                        `;
+                        listaDiv.appendChild(item);
+                    });
+                } else {
+                    listaDiv.innerHTML = '<p style="text-align: center; color: #999;">Nenhuma disciplina cadastrada</p>';
+                }
+            } catch (error) {
+                listaDiv.innerHTML = '<p style="text-align: center; color: red;">❌ Erro ao carregar disciplinas</p>';
+            }
+        }
+
+        // Excluir Disciplina
+        async function excluirDisciplina(id) {
+            if (!confirm('Tem certeza que deseja excluir esta disciplina?')) return;
+
+            try {
+                const response = await fetch(`${API_URL}/disciplinas/${id}`, {
+                    method: 'DELETE'
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    alert('✅ Disciplina excluída com sucesso!');
+                    listarDisciplinas();
+                } else {
+                    alert('❌ ' + result.message);
+                }
+            } catch (error) {
+                alert('❌ Erro ao excluir disciplina');
+            }
+        }
+
+        // Carregar listas ao iniciar
+        listarUsuarios();
+        listarDisciplinas();
+    </script>
+</body>
+</html>
