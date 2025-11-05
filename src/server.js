@@ -35,3 +35,8 @@ app.listen(PORT, () => {
 });
 
 module.exports = app;
+
+// Rota para visualizar bugs
+app.get('/bugs', (req, res) => {
+  res.sendFile(path.join(__dirname, '../public/bugs.html'));
+});
