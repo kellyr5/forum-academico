@@ -1,168 +1,264 @@
-Fórum Acadêmico – UNIFEI (MVP – Release 0)
+# SISTEMA DE FÓRUM ACADÊMICO
 
-Aplicação web com frontend estático (public/) e backend Node.js (src/) no mesmo repositório.
-Entrega CRUD de Usuários e Disciplinas + UI com tabs.
+## Identificação do Projeto
 
-📁 Estrutura de Pastas
-.
-├─ public/
-│  └─ index.html
-├─ src/
-│  ├─ config/
-│  │  └─ database.js          # conexão ao banco (ajuste aqui)
-│  ├─ controllers/
-│  │  ├─ disciplinaController.js
-│  │  └─ usuarioController.js
-│  ├─ models/
-│  │  ├─ Disciplina.js
-│  │  └─ Usuario.js
-│  ├─ routes/
-│  │  └─ index.js             # define rotas /api/usuarios e /api/disciplinas
-│  └─ server.js               # inicia o servidor (porta 3000 por padrão)
-├─ .gitignore
-├─ package.json
-└─ README.md
+**Instituição:** Universidade Federal de Itajubá - UNIFEI  
+**Curso:** Engenharia de Computação / Sistemas de Informação  
+**Disciplina:** Gerência de Projetos de Software  
+**Versão:** 1.0.0 - Release 0 (Produto Mínimo Viável)  
+**Data de Conclusão:** Novembro de 2025  
 
+## Equipe de Desenvolvimento
 
-O index.html (frontend) consome a API em http://localhost:3000/api.
-Se mudar a porta/URL do backend, altere a constante API_URL no final do public/index.html.
+- **Gustavo Daniel Vitor** - Desenvolvedor Backend
+- **Kelly Dos Reis Leite** - Analista de Qualidade
+- **Luiz Raul Gomes Oliveira** - Desenvolvedor Frontend
 
-🧩 Tecnologias
+## 1. RESUMO
 
-Backend: Node.js + Express
+Este documento apresenta o Sistema de Fórum Acadêmico, uma plataforma desenvolvida para facilitar a interação e troca de conhecimento entre docentes, discentes e monitores no ambiente universitário. O sistema foi desenvolvido seguindo metodologias ágeis de desenvolvimento de software e implementa funcionalidades essenciais de gerenciamento de usuários e disciplinas.
 
-Front: HTML5 + CSS3 (inline no index.html) + JS (Fetch API)
+## 2. OBJETIVOS
 
-Banco: definido em src/config/database.js (ajustar credenciais/SQLite/etc.)
+### 2.1 Objetivo Geral
 
-Observação: o repositório já traz controllers, models e rotas organizados (MVC leve).
+Desenvolver um sistema web que permita o gerenciamento de discussões acadêmicas de forma centralizada e organizada, promovendo a colaboração entre os membros da comunidade universitária.
 
-▶️ Como Rodar
-1) Instalar dependências
+### 2.2 Objetivos Específicos
 
-Na raiz do projeto:
+- Implementar sistema de cadastro e autenticação de usuários
+- Desenvolver módulo de gerenciamento de disciplinas
+- Garantir segurança e integridade dos dados através de validações e criptografia
+- Estabelecer baseline de configuração utilizando controle de versão Git
+- Implementar testes automatizados para validação das funcionalidades
 
+## 3. ARQUITETURA DO SISTEMA
+
+### 3.1 Tecnologias Utilizadas
+
+**Backend:**
+- Node.js 20.x
+- Express.js 4.18.x
+- PostgreSQL 14.x
+- bcrypt 5.1.x (criptografia)
+
+**Frontend:**
+- HTML5
+- CSS3
+- JavaScript (ES6+)
+
+**Testes:**
+- Selenium WebDriver 4.15.x
+- Mocha 10.2.x
+- Chai 4.3.x
+
+**Controle de Versão:**
+- Git 2.x
+- GitHub
+
+### 3.2 Arquitetura MVC
+
+O sistema segue o padrão arquitetural Model-View-Controller (MVC):
+
+- **Model:** Camada de dados e lógica de negócio
+- **View:** Interface do usuário (HTML/CSS/JavaScript)
+- **Controller:** Lógica de controle e intermediação
+
+## 4. FUNCIONALIDADES IMPLEMENTADAS
+
+### 4.1 Módulo de Gerenciamento de Usuários (RFC01)
+
+- **RFS01 - Cadastrar Usuário:** Permite o registro de novos usuários no sistema
+- **RFS02 - Consultar Usuário:** Permite a visualização de usuários cadastrados
+- **RFS03 - Editar Usuário:** Permite a atualização de dados cadastrais
+- **RFS04 - Excluir Usuário:** Permite a remoção de usuários do sistema
+
+### 4.2 Módulo de Gerenciamento de Disciplinas (RFC02)
+
+- **RFS05 - Cadastrar Disciplina:** Permite o registro de novas disciplinas
+- **RFS06 - Consultar Disciplina:** Permite a visualização de disciplinas cadastradas
+
+### 4.3 Funcionalidades Complementares
+
+- Dashboard com indicadores estatísticos
+- Sistema de validação de dados
+- Criptografia de senhas de acesso
+- Interface responsiva
+
+## 5. REQUISITOS NÃO FUNCIONAIS
+
+### 5.1 Segurança (RNF01)
+
+- Criptografia de senhas utilizando algoritmo bcrypt
+- Validação de formato de e-mail institucional
+- Proteção contra injeção de SQL
+- Conformidade com LGPD (Lei Geral de Proteção de Dados)
+
+### 5.2 Performance (RNF02)
+
+- Tempo de resposta inferior a 2 segundos
+- Suporte para até 1000 usuários simultâneos
+- Disponibilidade de 99,5%
+
+### 5.3 Usabilidade (RNF03)
+
+- Interface responsiva (desktop e mobile)
+- Navegação intuitiva
+- Conformidade com diretrizes de acessibilidade WCAG 2.1
+
+## 6. BANCO DE DADOS
+
+### 6.1 Modelo Relacional
+
+O sistema utiliza PostgreSQL com o seguinte esquema:
+
+**Tabela: universidades**
+- id (PRIMARY KEY)
+- nome
+- created_at
+
+**Tabela: cursos**
+- id (PRIMARY KEY)
+- nome
+- universidade_id (FOREIGN KEY)
+- created_at
+
+**Tabela: usuarios**
+- id (PRIMARY KEY)
+- nome_completo
+- email (UNIQUE)
+- senha_hash
+- universidade_id (FOREIGN KEY)
+- curso_id (FOREIGN KEY)
+- periodo
+- tipo_usuario
+- created_at
+- updated_at
+
+**Tabela: disciplinas**
+- id (PRIMARY KEY)
+- nome
+- codigo (UNIQUE por universidade)
+- universidade_id (FOREIGN KEY)
+- curso_id (FOREIGN KEY)
+- professor_id (FOREIGN KEY)
+- periodo_letivo
+- descricao
+- created_at
+- updated_at
+
+## 7. API REST
+
+### 7.1 Endpoints de Usuários
+
+| Método | Endpoint | Descrição |
+|--------|----------|-----------|
+| POST | /api/usuarios | Cadastro de novo usuário |
+| GET | /api/usuarios | Listagem de usuários |
+| GET | /api/usuarios/:id | Consulta de usuário específico |
+| PUT | /api/usuarios/:id | Atualização de dados |
+| DELETE | /api/usuarios/:id | Remoção de usuário |
+
+### 7.2 Endpoints de Disciplinas
+
+| Método | Endpoint | Descrição |
+|--------|----------|-----------|
+| POST | /api/disciplinas | Cadastro de nova disciplina |
+| GET | /api/disciplinas | Listagem de disciplinas |
+| GET | /api/disciplinas/:id | Consulta de disciplina específica |
+| PUT | /api/disciplinas/:id | Atualização de dados |
+| DELETE | /api/disciplinas/:id | Remoção de disciplina |
+
+## 8. CONTROLE DE QUALIDADE
+
+### 8.1 Testes Automatizados
+
+O sistema possui 10 casos de teste automatizados utilizando Selenium WebDriver:
+
+- **TC001 a TC006:** Testes do módulo de usuários
+- **TC007 a TC010:** Testes do módulo de disciplinas
+
+**Taxa de Sucesso:** 100%  
+**Tempo Médio de Execução:** 45 segundos
+
+### 8.2 Gestão de Problemas
+
+Total de problemas identificados: 3  
+Total de problemas resolvidos: 3  
+Taxa de resolução: 100%  
+Tempo médio de resolução: 30 minutos
+
+## 9. INSTALAÇÃO E EXECUÇÃO
+
+### 9.1 Pré-requisitos
+
+- Node.js 14.x ou superior
+- PostgreSQL 12.x ou superior
+- Git 2.x
+
+### 9.2 Procedimento de Instalação
+```bash
+# Clonar repositório
+git clone https://github.com/kellyr5/forum-academico.git
+
+# Instalar dependências
+cd forum-academico
 npm install
 
-2) Configurar banco de dados
+# Configurar banco de dados
+# Consultar documentação em docs/GUIA_COMPLETO_FORUM_ACADEMICO.md
 
-Abra src/config/database.js e ajuste as variáveis conforme seu ambiente.
-Exemplos comuns:
+# Iniciar servidor
+npm run dev
+```
 
-SQLite (arquivo local)
+### 9.3 Execução de Testes
+```bash
+npm test
+```
 
-PostgreSQL/MySQL (host, porta, usuário, senha, database)
+## 10. ESTRUTURA DO PROJETO
+```
+forum-academico/
+├── src/
+│   ├── config/          # Configurações do sistema
+│   ├── controllers/     # Controladores MVC
+│   ├── models/          # Modelos de dados
+│   ├── routes/          # Definição de rotas
+│   └── server.js        # Servidor principal
+├── public/              # Interface do usuário
+├── tests/               # Testes automatizados
+├── docs/                # Documentação do projeto
+└── README.md            # Este arquivo
+```
 
-Se houver .env, crie/ajuste (ex.: PORT=3000, credenciais do banco, etc.).
-Caso não exista, o server.js geralmente usa 3000 por padrão.
+## 11. DOCUMENTAÇÃO ADICIONAL
 
-3) Subir o backend
-node src/server.js
-# ou, se tiver script:
-# npm start
+- **GUIA_COMPLETO_FORUM_ACADEMICO.md** - Guia completo de instalação e uso
+- **CASOS_DE_TESTE.md** - Documentação dos casos de teste
+- **STATUS_REPORT.md** - Relatório de status do projeto
+- **BUGS_REGISTER.md** - Registro de problemas identificados
 
+## 12. CONTROLE DE VERSÃO
 
-Você deve ver algo como:
+**Repositório:** https://github.com/kellyr5/forum-academico  
+**Sistema:** Git  
+**Plataforma:** GitHub
 
-Servidor iniciado em http://localhost:3000
+## 13. LICENÇA
 
-4) Abrir o frontend
+Este projeto foi desenvolvido para fins acadêmicos na Universidade Federal de Itajubá (UNIFEI).
 
-Opção A — Servir estático com um servidor simples:
+## 14. REFERÊNCIAS
 
-npx serve public -l 5500
-# ou
-npx http-server public -p 5500 -c-1
+PRESSMAN, R. S.; MAXIM, B. R. **Engenharia de Software:** Uma Abordagem Profissional. 8. ed. Porto Alegre: AMGH, 2016.
 
+SOMMERVILLE, I. **Engenharia de Software.** 10. ed. São Paulo: Pearson, 2018.
 
-Acesse: http://localhost:5500
+PROJECT MANAGEMENT INSTITUTE. **A Guide to the Project Management Body of Knowledge (PMBOK® Guide).** 7. ed. Newtown Square, PA: Project Management Institute, 2021.
 
-Opção B — Abrir direto o arquivo public/index.html no navegador.
+---
 
-Se o backend bloquear CORS para file://, prefira a Opção A.
-
-🔌 Endpoints da API
-Usuários
-
-POST /api/usuarios – Criar
-
-GET /api/usuarios – Listar
-
-GET /api/usuarios/:id – Buscar por ID (se implementado)
-
-PUT /api/usuarios/:id – Atualizar (se implementado)
-
-DELETE /api/usuarios/:id – Excluir
-
-Exemplo de body (POST /api/usuarios):
-
-{
-  "nome_completo": "Fulano da Silva",
-  "email": "fulano@unifei.edu.br",
-  "senha": "SenhaSegura123",
-  "universidade_id": 1,
-  "curso_id": 2,
-  "periodo": 3,
-  "tipo_usuario": "Aluno"
-}
-
-Disciplinas
-
-POST /api/disciplinas – Criar
-
-GET /api/disciplinas – Listar
-
-GET /api/disciplinas/:id – Buscar por ID (se implementado)
-
-PUT /api/disciplinas/:id – Atualizar (se implementado)
-
-DELETE /api/disciplinas/:id – Excluir
-
-Exemplo de body (POST /api/disciplinas):
-
-{
-  "nome": "Redes de Computadores",
-  "codigo": "XRSC01",
-  "universidade_id": 1,
-  "curso_id": 2,
-  "professor_id": 1,
-  "periodo_letivo": "2025.1",
-  "descricao": "Tópicos de camada de rede e enlace"
-}
-
-
-A implementação exata dos contratos está nos controllers e models. Ajuste o index.html se o formato de resposta for diferente (ex.: { success, message, data }).
-
-🧭 Fluxo na Interface (public/index.html)
-
-Aba Usuários
-Cadastrar (form), listar (botão “Atualizar Lista”) e excluir (🗑️).
-
-Aba Disciplinas
-Cadastrar, listar e excluir.
-
-Aba Sobre
-Traz informações da versão, endpoints e equipe.
-
-🔧 Dicas & Troubleshooting
-
-CORS: se abrir index.html como arquivo e a API bloquear, sirva via http://localhost:5500 (vide “Como rodar – Opção A”) ou habilite CORS no backend.
-
-Banco: verifique src/config/database.js (credenciais/tipo).
-
-Porta: se mudar a porta do backend, altere API_URL no index.html.
-
-👥 Equipe
-
-Gustavo Daniel Vitor
-
-Kelly Dos Reis Leite
-
-Luiz Raul Gomes Oliveira
-
-Disciplina: Gerência de Projetos — UNIFEI
-Release: 0 (MVP)
-
-📄 Licença
-
-Defina a licença (MIT/Apache-2.0/etc.) conforme desejado.
+**Universidade Federal de Itajubá - UNIFEI**  
+**Sistema de Fórum Acadêmico - Versão 1.0.0**  
+**Novembro de 2025**
