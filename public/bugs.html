@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Bugs - Fórum Acadêmico</title>
+    <title>Registro de Problemas - Sistema de Fórum Acadêmico</title>
     <style>
         * {
             margin: 0;
@@ -11,31 +11,43 @@
             box-sizing: border-box;
         }
 
+        :root {
+            --unifei-azul: #003d7a;
+            --unifei-cinza: #f5f5f5;
+            --unifei-branco: #ffffff;
+            --cor-critica: #c62828;
+            --cor-alta: #f57c00;
+            --cor-media: #fbc02d;
+            --cor-resolvido: #2e7d32;
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Times New Roman', Times, serif;
+            background: var(--unifei-cinza);
             min-height: 100vh;
-            padding: 20px;
+            padding: 0;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
+            padding: 20px;
         }
 
         header {
-            background: white;
+            background: var(--unifei-azul);
+            color: var(--unifei-branco);
             padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             margin-bottom: 30px;
             text-align: center;
         }
 
         header h1 {
-            color: #667eea;
-            font-size: 2.5em;
-            margin-bottom: 10px;
+            font-size: 1.8em;
+            font-weight: normal;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .stats {
@@ -46,54 +58,70 @@
         }
 
         .stat-card {
-            background: white;
+            background: var(--unifei-branco);
             padding: 20px;
-            border-radius: 15px;
+            border: 1px solid #e0e0e0;
             text-align: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
 
         .stat-card .number {
-            font-size: 3em;
+            font-size: 2.5em;
             font-weight: bold;
-            color: #667eea;
+            color: var(--unifei-azul);
         }
 
         .stat-card .label {
             color: #666;
             margin-top: 10px;
+            text-transform: uppercase;
+            font-size: 0.85em;
+            letter-spacing: 0.5px;
         }
 
         .bug-list {
-            background: white;
+            background: var(--unifei-branco);
             padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            border: 1px solid #e0e0e0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .section-title {
+            color: var(--unifei-azul);
+            font-size: 1.4em;
+            font-weight: normal;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--unifei-azul);
+            text-transform: uppercase;
+            font-size: 1.1em;
+            letter-spacing: 0.5px;
         }
 
         .bug-item {
             padding: 20px;
             margin-bottom: 15px;
-            border-left: 5px solid #667eea;
-            background: #f8f9fa;
-            border-radius: 8px;
+            border-left: 5px solid var(--unifei-azul);
+            background: #fafafa;
+            border: 1px solid #e0e0e0;
         }
 
         .bug-item.critical {
-            border-left-color: #dc3545;
+            border-left-color: var(--cor-critica);
         }
 
         .bug-item.high {
-            border-left-color: #fd7e14;
+            border-left-color: var(--cor-alta);
         }
 
         .bug-item.medium {
-            border-left-color: #ffc107;
+            border-left-color: var(--cor-media);
         }
 
         .bug-item h3 {
             color: #333;
             margin-bottom: 10px;
+            font-size: 1.1em;
+            font-weight: normal;
         }
 
         .bug-meta {
@@ -104,66 +132,79 @@
         }
 
         .badge {
-            padding: 5px 10px;
-            border-radius: 15px;
-            font-size: 0.85em;
+            padding: 4px 10px;
+            font-size: 0.75em;
             font-weight: bold;
+            border: 1px solid;
+            background: var(--unifei-branco);
+            text-transform: uppercase;
         }
 
         .badge-critical {
-            background: #dc3545;
-            color: white;
+            border-color: var(--cor-critica);
+            color: var(--cor-critica);
         }
 
         .badge-high {
-            background: #fd7e14;
-            color: white;
+            border-color: var(--cor-alta);
+            color: var(--cor-alta);
         }
 
         .badge-medium {
-            background: #ffc107;
-            color: #333;
+            border-color: var(--cor-media);
+            color: var(--cor-media);
         }
 
         .badge-resolved {
-            background: #28a745;
-            color: white;
+            border-color: var(--cor-resolvido);
+            color: var(--cor-resolvido);
         }
 
         .btn {
             display: inline-block;
             padding: 10px 20px;
-            background: #667eea;
-            color: white;
+            background: var(--unifei-azul);
+            color: var(--unifei-branco);
             text-decoration: none;
-            border-radius: 8px;
             margin-top: 20px;
+            text-transform: uppercase;
+            font-size: 0.85em;
+            letter-spacing: 0.5px;
         }
 
         .btn:hover {
-            background: #5568d3;
+            background: #0066cc;
+        }
+
+        footer {
+            background: var(--unifei-azul);
+            color: var(--unifei-branco);
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+            font-size: 0.85em;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>🐛 Sistema de Registro de Bugs</h1>
-            <p>Fórum Acadêmico - Gerenciamento de Problemas</p>
-        </header>
+    <header>
+        <h1>Sistema de Registro de Problemas</h1>
+        <p>Fórum Acadêmico - Universidade Federal de Itajubá</p>
+    </header>
 
+    <div class="container">
         <div class="stats">
             <div class="stat-card">
                 <div class="number">3</div>
-                <div class="label">Total de Bugs</div>
+                <div class="label">Total de Problemas</div>
             </div>
             <div class="stat-card">
                 <div class="number">3</div>
-                <div class="label">Resolvidos</div>
+                <div class="label">Problemas Resolvidos</div>
             </div>
             <div class="stat-card">
                 <div class="number">0</div>
-                <div class="label">Abertos</div>
+                <div class="label">Problemas Abertos</div>
             </div>
             <div class="stat-card">
                 <div class="number">100%</div>
@@ -172,43 +213,47 @@
         </div>
 
         <div class="bug-list">
-            <h2 style="color: #667eea; margin-bottom: 20px;">Lista de Bugs Registrados</h2>
+            <h2 class="section-title">Registro de Problemas Identificados</h2>
 
             <div class="bug-item critical">
-                <h3>🔴 BUG-001: Erro de autenticação PostgreSQL</h3>
-                <p><strong>Descrição:</strong> Sistema apresentava erro de autenticação ao conectar com o banco de dados.</p>
+                <h3>PROBLEMA 001: Falha na Autenticação do Sistema de Banco de Dados</h3>
+                <p><strong>Descrição:</strong> O sistema apresentava erro de autenticação ao tentar estabelecer conexão com o servidor PostgreSQL.</p>
                 <div class="bug-meta">
-                    <span class="badge badge-critical">Crítica</span>
-                    <span class="badge badge-resolved">Resolvido</span>
+                    <span class="badge badge-critical">Severidade Crítica</span>
+                    <span class="badge badge-resolved">Status: Resolvido</span>
                     <span>Data: 04/11/2025</span>
-                    <span>Tempo: 30 min</span>
+                    <span>Tempo de Resolução: 30 minutos</span>
                 </div>
             </div>
 
             <div class="bug-item high">
-                <h3>🟠 BUG-002: Incompatibilidade ChromeDriver</h3>
-                <p><strong>Descrição:</strong> Testes Selenium falhavam devido à incompatibilidade entre Chrome 142 e ChromeDriver 119.</p>
+                <h3>PROBLEMA 002: Incompatibilidade de Versão do Driver de Testes</h3>
+                <p><strong>Descrição:</strong> Os testes automatizados falhavam devido à incompatibilidade entre a versão do ChromeDriver (119) e a versão do navegador Chrome instalado (142).</p>
                 <div class="bug-meta">
-                    <span class="badge badge-high">Alta</span>
-                    <span class="badge badge-resolved">Resolvido</span>
+                    <span class="badge badge-high">Severidade Alta</span>
+                    <span class="badge badge-resolved">Status: Resolvido</span>
                     <span>Data: 04/11/2025</span>
-                    <span>Tempo: 15 min</span>
+                    <span>Tempo de Resolução: 15 minutos</span>
                 </div>
             </div>
 
             <div class="bug-item medium">
-                <h3>🟡 BUG-003: Timeout em teste de cadastro de disciplina</h3>
-                <p><strong>Descrição:</strong> Teste TC008 falhava consistentemente com timeout ao aguardar resposta do formulário.</p>
+                <h3>PROBLEMA 003: Timeout em Procedimento de Teste Automatizado</h3>
+                <p><strong>Descrição:</strong> O teste de caso TC008 (cadastro de disciplina) apresentava falha consistente devido a timeout ao aguardar resposta do formulário.</p>
                 <div class="bug-meta">
-                    <span class="badge badge-medium">Média</span>
-                    <span class="badge badge-resolved">Resolvido</span>
+                    <span class="badge badge-medium">Severidade Média</span>
+                    <span class="badge badge-resolved">Status: Resolvido</span>
                     <span>Data: 04/11/2025</span>
-                    <span>Tempo: 45 min</span>
+                    <span>Tempo de Resolução: 45 minutos</span>
                 </div>
             </div>
 
-            <a href="/" class="btn">← Voltar para o Sistema</a>
+            <a href="/" class="btn">Retornar ao Sistema Principal</a>
         </div>
     </div>
+
+    <footer>
+        <p>&copy; 2025 Universidade Federal de Itajubá - UNIFEI. Todos os direitos reservados.</p>
+    </footer>
 </body>
 </html>
