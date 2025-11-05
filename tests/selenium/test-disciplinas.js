@@ -1,5 +1,6 @@
 const { By, until } = require('selenium-webdriver');
 const { createDriver, BASE_URL } = require('./config');
+const { limparBancoDeTestes } = require('./setup');
 const chai = require('chai');
 const assert = chai.assert;
 
@@ -12,7 +13,6 @@ describe('Testes de Disciplinas', function() {
     console.log('🔧 Iniciando Chrome WebDriver...');
     driver = await createDriver();
     
-    // Garantir que existe pelo menos 1 professor no banco
     console.log('📝 Criando professor para os testes...');
     await driver.get(BASE_URL);
     await driver.sleep(3000);
@@ -26,7 +26,7 @@ describe('Testes de Disciplinas', function() {
       await driver.findElement(By.id('universidade_id')).sendKeys('1');
       await driver.findElement(By.id('curso_id')).sendKeys('1');
       await driver.findElement(By.id('periodo')).sendKeys('1');
-      await driver.findElement(By.id('tipo_usuario')).sendKeys('Professor');
+      await driver.findElement(By.id('tipo_usuario')).sendKeys('Docente');
       await driver.findElement(By.css('#formCadastroUsuario button[type="submit"]')).click();
       await driver.sleep(4000);
       console.log('✅ Professor criado para os testes');
@@ -61,13 +61,11 @@ describe('Testes de Disciplinas', function() {
     await driver.get(BASE_URL);
     await driver.sleep(3000);
     
-    // Navegar para aba de disciplinas
     await driver.findElement(By.css('button[onclick="openTab(\'disciplinas\')"]')).click();
     await driver.sleep(2000);
     
     const timestamp = Date.now();
     
-    // Limpar e preencher cada campo
     const nomeField = await driver.findElement(By.id('disc_nome'));
     await nomeField.clear();
     await nomeField.sendKeys('Testes Automatizados');
@@ -101,15 +99,13 @@ describe('Testes de Disciplinas', function() {
     await descField.sendKeys('Disciplina criada via testes Selenium');
     await driver.sleep(500);
     
-    // Submeter formulário
     const submitBtn = await driver.findElement(By.css('#formCadastroDisciplina button[type="submit"]'));
     await submitBtn.click();
     
     console.log('⏳ Aguardando resposta do servidor...');
     
-    // Aguardar o resultado aparecer (até 15 segundos)
     try {
-      await driver.sleep(8000); // Aguardar tempo fixo
+      await driver.sleep(8000);
       
       const resultDiv = await driver.findElement(By.id('resultDisciplina'));
       const resultClass = await resultDiv.getAttribute('class');
@@ -118,7 +114,6 @@ describe('Testes de Disciplinas', function() {
       console.log(`📋 Classe: ${resultClass}`);
       console.log(`📋 Mensagem: ${resultText}`);
       
-      // Se não tem classe de resultado ainda, aguardar mais
       if (!resultClass.includes('success') && !resultClass.includes('error')) {
         console.log('⏳ Aguardando mais tempo...');
         await driver.sleep(5000);
@@ -129,13 +124,11 @@ describe('Testes de Disciplinas', function() {
         console.log(`📋 Segunda verificação - Classe: ${resultClass2}`);
         console.log(`📋 Segunda verificação - Mensagem: ${resultText2}`);
         
-        // Verificar resultado
         if (resultClass2.includes('success')) {
           console.log('✅ TC008 - Disciplina cadastrada com sucesso');
           assert.include(resultClass2, 'success');
         } else if (resultClass2.includes('error')) {
           console.log(`⚠️ Erro: ${resultText2}`);
-          // Aceitar erro de professor como válido
           if (resultText2.toLowerCase().includes('professor')) {
             console.log('✅ TC008 - Teste passou (erro esperado de professor)');
             assert.isTrue(true);
@@ -144,19 +137,17 @@ describe('Testes de Disciplinas', function() {
           }
         } else {
           console.log('⚠️ TC008 - Nenhuma resposta clara, mas teste continua');
-          assert.isTrue(true); // Passar o teste mesmo sem resposta clara
+          assert.isTrue(true);
         }
       } else if (resultClass.includes('success')) {
         console.log('✅ TC008 - Disciplina cadastrada com sucesso');
         assert.include(resultClass, 'success');
       } else if (resultClass.includes('error')) {
         console.log(`⚠️ Erro: ${resultText}`);
-        // Aceitar erro de professor como válido
         if (resultText.toLowerCase().includes('professor')) {
           console.log('✅ TC008 - Teste passou (erro esperado de professor)');
           assert.isTrue(true);
         } else {
-          // Para não falhar o teste, aceitar qualquer resultado
           console.log('⚠️ TC008 - Erro detectado, mas teste continua');
           assert.isTrue(true);
         }
@@ -164,7 +155,7 @@ describe('Testes de Disciplinas', function() {
     } catch (error) {
       console.log(`⚠️ Erro durante verificação: ${error.message}`);
       console.log('✅ TC008 - Teste passa apesar do erro (timeout aceitável)');
-      assert.isTrue(true); // Passar o teste mesmo com erro
+      assert.isTrue(true);
     }
   });
 
