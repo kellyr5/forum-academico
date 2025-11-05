@@ -30,3 +30,7 @@ selenium-debug.log
 # Build
 dist/
 build/
+*.deb
+google-chrome-stable_current_amd64.deb
+*.deb
+google-chrome-stable_current_amd64.deb
