@@ -1,33 +1,45 @@
 {
   "name": "forum-academico",
   "version": "1.0.0",
-  "description": "Sistema de Fórum Acadêmico - UNIFEI",
-  "main": "src/server.js",
+  "private": true,
   "scripts": {
-    "start": "node src/server.js",
-    "dev": "nodemon src/server.js",
-    "test": "mocha tests/selenium/index.js --timeout 30000",
-    "test:watch": "mocha tests/selenium/index.js --watch --timeout 30000"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "test": "node tests/selenium/test.all.cruds.js",
+    "test:watch": "npm run dev & sleep 5 && npm run test",
+    "db:push": "prisma db push",
+    "db:seed": "tsx prisma/seed.ts",
+    "db:studio": "prisma studio",
+    "db:generate": "prisma generate",
+    "db:reset": "rm -f prisma/dev.db && npm run db:push && npm run db:seed",
+    "report:bugs": "cat tests/BUG_REPORT.md",
+    "report:status": "cat STATUS_REPORT.md"
   },
-  "keywords": [
-    "forum",
-    "academico",
-    "unifei"
-  ],
-  "author": "Equipe Fórum Acadêmico",
-  "license": "MIT",
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  },
   "dependencies": {
-    "bcrypt": "^5.1.1",
-    "cors": "^2.8.5",
-    "dotenv": "^16.3.1",
-    "express": "^4.18.2",
-    "jsonwebtoken": "^9.0.2",
-    "pg": "^8.11.3"
+    "@prisma/client": "^5.7.0",
+    "bcryptjs": "^2.4.3",
+    "next": "14.0.4",
+    "react": "^18",
+    "react-dom": "^18"
   },
   "devDependencies": {
-    "chai": "^4.3.7",
-    "mocha": "^10.2.0",
-    "nodemon": "^3.0.1",
-    "selenium-webdriver": "^4.15.0"
+    "@types/bcryptjs": "^2.4.6",
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "@types/selenium-webdriver": "^4.1.21",
+    "chromedriver": "^120.0.0",
+    "eslint": "^8",
+    "eslint-config-next": "14.0.4",
+    "geckodriver": "^4.3.0",
+    "prisma": "^5.7.0",
+    "selenium-webdriver": "^4.16.0",
+    "tsx": "^4.20.6",
+    "typescript": "^5"
   }
 }
