@@ -85,7 +85,7 @@ class TestForumAcademicoCompleto:
         select_element.click()
         time.sleep(0.4)
         select = Select(select_element)
-        select.select_by_value(valor_opcao)
+        select.select_by_value(str(valor_opcao))
         time.sleep(0.4)
     
     def rolar_para_elemento(self, elemento):
@@ -218,7 +218,8 @@ class TestForumAcademicoCompleto:
         
         print("  [6/7] Curso e periodo...")
         self.selecionar_opcao_fluida("usuario-curso", str(random.randint(1, 3)))
-        self.selecionar_opcao_fluida("usuario-periodo", str(random.randint(1, 8)))
+        # CORRIGIDO: Período de 1 a 5 (conforme HTML)
+        self.selecionar_opcao_fluida("usuario-periodo", str(random.randint(1, 5)))
         time.sleep(1)
         
         print("  [7/7] Cadastrando...")
@@ -523,7 +524,6 @@ class TestForumAcademicoCompleto:
         self.scroll_suave(400)
         time.sleep(1)
         
-        # Verificar se formulario esta visivel (aluno pode criar topico)
         form_visivel = self.verificar_elemento_visivel(By.ID, 'form-topico')
         if form_visivel:
             print("  ✓ Aluno pode criar topicos")
