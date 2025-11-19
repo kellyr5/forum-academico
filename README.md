@@ -428,3 +428,80 @@ Desenvolvido para fins academicos - UNIFEI
 Versao: 2.0.0
 Ultima atualizacao: 2025
 # Forum-Academico
+
+## Sistema de Rastreamento de Bugs
+
+O projeto utiliza sistema profissional de rastreamento de bugs com suporte a Mantis e Bugzilla.
+
+### Arquivos de Exportacao
+
+**Mantis BugTracker:**
+- Arquivo: mantis_bugs_export.csv
+- Formato: CSV compativel com Mantis 2.25+
+- Total de bugs: 5 (todos resolvidos)
+
+**Bugzilla:**
+- Arquivo: bugzilla_bugs_export.xml
+- Formato: XML compativel com Bugzilla 5.0+
+- Total de bugs: 5 (todos resolvidos)
+
+### Bugs Registrados
+
+| ID | Categoria | Severidade | Status | Resumo |
+|----|-----------|------------|--------|---------|
+| 001 | Backend - Database | Major | Resolvido | Validacao de email duplicado |
+| 002 | Backend - Upload | Critical | Resolvido | Timeout em uploads grandes |
+| 003 | Backend - Database | Critical | Resolvido | Campo universidade obrigatorio |
+| 004 | Backend - Database | Major | Resolvido | Delecao sem cascata |
+| 005 | Frontend - Upload | Minor | Resolvido | Preview de imagens |
+
+### Instalacao do Sistema de Bugs
+
+#### Opcao 1: Mantis BugTracker
+
+Consulte MANTIS_SETUP.md para instrucoes completas de instalacao.
+
+Resumo rapido:
+```bash
+# Download
+wget https://sourceforge.net/projects/mantisbt/files/mantis-stable/2.25.7/mantisbt-2.25.7.tar.gz
+
+# Configurar banco e acessar
+http://localhost/mantis/admin/install.php
+
+# Importar bugs
+Manage > Import/Export > Upload mantis_bugs_export.csv
+```
+
+#### Opcao 2: Bugzilla
+
+Consulte BUGZILLA_SETUP.md para instrucoes completas de instalacao.
+
+Resumo rapido:
+```bash
+# Download
+wget https://ftp.mozilla.org/pub/mozilla.org/webtools/bugzilla-5.0.6.tar.gz
+
+# Configurar
+./checksetup.pl
+
+# Importar bugs
+./importxml.pl -v bugzilla_bugs_export.xml
+```
+
+### Workflow de Bugs
+
+1. Bug reportado (NEW)
+2. Analise e confirmacao (ACKNOWLEDGED)
+3. Atribuicao a desenvolvedor (ASSIGNED)
+4. Correcao implementada (RESOLVED)
+5. Validacao e fechamento (CLOSED)
+
+### Integracao com Git
+
+Commits mencionam IDs de bugs:
+```
+fix: corrige validacao de email (refs #001)
+feat: adiciona limite de upload (closes #002)
+```
+
