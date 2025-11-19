@@ -35,6 +35,7 @@ const recadosRoutes = require('./routes/recados');
 const categoriasRoutes = require('./routes/categorias');
 const votosRoutes = require('./routes/votos');
 const arquivosRoutes = require('./routes/arquivos');
+const authRoutes = require('./routes/auth');
 
 app.use('/api/usuarios', usuariosRoutes);
 app.use('/api/disciplinas', disciplinasRoutes);
@@ -44,6 +45,7 @@ app.use('/api/recados', recadosRoutes);
 app.use('/api/categorias', categoriasRoutes);
 app.use('/api/votos', votosRoutes);
 app.use('/api/arquivos', arquivosRoutes);
+app.use('/api/auth', authRoutes);
 const relatoriosRoutes = require('./routes/relatorios');
 app.use('/api/relatorios', relatoriosRoutes);
 

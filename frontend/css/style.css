@@ -807,3 +807,46 @@ a:focus-visible {
 .mb-sm { margin-bottom: var(--space-sm); }
 .mb-md { margin-bottom: var(--space-md); }
 .mb-lg { margin-bottom: var(--space-lg); }
+
+/* Indicadores de permissao */
+.formulario-bloqueado {
+    position: relative;
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.formulario-bloqueado::after {
+    content: 'Acesso restrito ao seu perfil';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(196, 30, 58, 0.95);
+    color: white;
+    padding: 16px 32px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    z-index: 10;
+}
+
+/* Badge de tipo de usuario */
+.header .subtitle::before {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 11px;
+    margin-right: 8px;
+}
+
+/* FORCE DISPLAY DE ABAS - Importante para garantir visibilidade */
+.tabs .tab-link {
+    display: inline-block !important;
+    visibility: visible !important;
+}
+
+/* Apenas ocultar quando explicitamente definido por JS */
+.tabs .tab-link[style*="display: none"] {
+    display: none !important;
+}
