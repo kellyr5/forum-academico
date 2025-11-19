@@ -427,3 +427,4 @@ Para duvidas ou sugestoes sobre o projeto, entre em contato com a coordenacao de
 Desenvolvido para fins academicos - UNIFEI
 Versao: 2.0.0
 Ultima atualizacao: 2025
+# Forum-Academico
