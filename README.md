@@ -233,18 +233,6 @@ Todos os 5 bugs identificados foram corrigidos. Ver `BUGS.md` para detalhes.
 
 ---
 
-## CONTRIBUIDORES
-
-Desenvolvido para a Universidade Federal de Itajuba (UNIFEI)
-
----
-
 ## LICENCA
 
 Projeto academico - UNIFEI © 2025
-
----
-
-## CONTATO
-
-Para duvidas ou sugestoes, entre em contato com a equipe de desenvolvimento.
